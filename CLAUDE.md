@@ -25,9 +25,16 @@ This project analyzes Bittensor validators and subnets via the Taostats API to g
 
 ## API Configuration
 
+```bash
+# Set environment variable before running
+export TAOSTATS_API_KEY="your-api-key"
+# Or source the .env file
+source .env
+```
+
 ```python
 BASE_URL = "https://api.taostats.io/api"
-API_KEY = "tao-74cb361b-9fff-4b79-aa18-79eadae99b27:41067436"
+API_KEY = os.environ.get("TAOSTATS_API_KEY")  # From environment
 RATE_LIMIT = 60 requests/minute (1.2s delay between calls)
 ```
 

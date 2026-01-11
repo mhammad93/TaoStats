@@ -19,7 +19,18 @@ Following the Tenex (SN67) exit scam that resulted in **$2.8M in delegator losse
 ### Prerequisites
 
 ```bash
-pip install requests
+pip install -r requirements.txt
+```
+
+### Setup
+
+```bash
+# 1. Copy environment template and add your API key
+cp .env.example .env
+# Edit .env with your Taostats API key
+
+# 2. Source environment variables
+source .env
 ```
 
 ### Usage

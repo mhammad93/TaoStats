@@ -1,0 +1,11 @@
+# TAO Delegation Portfolio Optimizer - Dependencies
+# Install: pip install -r requirements.txt
+
+# HTTP client
+requests>=2.32.0
+
+# Security: urllib3 must be >=2.6.0 to fix CVE-2025-66418, CVE-2025-66471
+urllib3>=2.6.0
+
+# Certificate verification
+certifi>=2024.0.0

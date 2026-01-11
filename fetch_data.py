@@ -8,11 +8,19 @@ import requests
 import json
 import time
 import os
+import sys
 from datetime import datetime
 
 # API Configuration
 BASE_URL = "https://api.taostats.io/api"
-API_KEY = "tao-74cb361b-9fff-4b79-aa18-79eadae99b27:41067436"
+API_KEY = os.environ.get("TAOSTATS_API_KEY")
+
+if not API_KEY:
+    print("ERROR: TAOSTATS_API_KEY environment variable not set.")
+    print("Set it with: export TAOSTATS_API_KEY='your-api-key'")
+    print("Or create a .env file and use: source .env")
+    sys.exit(1)
+
 HEADERS = {
     "Authorization": API_KEY,
     "Accept": "application/json"
