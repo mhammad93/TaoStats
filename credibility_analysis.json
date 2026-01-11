@@ -1,0 +1,246 @@
+{
+  "analysis_timestamp": "2026-01-10T22:47:26.681344",
+  "methodology": {
+    "weights": {
+      "team_transparency": 0.2,
+      "code_audit": 0.25,
+      "smart_contract_security": 0.25,
+      "utility_verification": 0.15,
+      "community_health": 0.15
+    },
+    "penalties": {
+      "exit_scam": "Total exclusion (score = 0)",
+      "single_owner_no_timelock": "70% penalty",
+      "multiple_red_flags": "40% penalty",
+      "single_red_flag": "15% penalty"
+    }
+  },
+  "subnets_analyzed": {
+    "64": {
+      "name": "Chutes",
+      "team_score": 90,
+      "audit_score": 75,
+      "security_score": 80,
+      "utility_score": 95,
+      "community_score": 90,
+      "red_flags": [],
+      "notes": "Leading serverless AI compute. Rayon Labs (3 subnets). Doxxed founders.",
+      "composite_credibility_score": 84.5,
+      "eligible_for_delegation": true
+    },
+    "19": {
+      "name": "Nineteen.ai",
+      "team_score": 90,
+      "audit_score": 70,
+      "security_score": 75,
+      "utility_score": 85,
+      "community_score": 85,
+      "red_flags": [],
+      "notes": "Rayon Labs image generation subnet.",
+      "composite_credibility_score": 79.75,
+      "eligible_for_delegation": true
+    },
+    "8": {
+      "name": "Vanta (PTN)",
+      "team_score": 95,
+      "audit_score": 65,
+      "security_score": 70,
+      "utility_score": 85,
+      "community_score": 80,
+      "red_flags": [],
+      "notes": "Decentralized prop trading. Founder: 15+ yrs tech exp.",
+      "composite_credibility_score": 77.5,
+      "eligible_for_delegation": true
+    },
+    "3": {
+      "name": "Templar",
+      "team_score": 85,
+      "audit_score": 70,
+      "security_score": 65,
+      "utility_score": 95,
+      "community_score": 80,
+      "red_flags": [],
+      "notes": "Only subnet with 2 NeurIPS papers. Training 1.2B+ models.",
+      "composite_credibility_score": 77.0,
+      "eligible_for_delegation": true
+    },
+    "51": {
+      "name": "Lium.io",
+      "team_score": 75,
+      "audit_score": 85,
+      "security_score": 80,
+      "utility_score": 90,
+      "community_score": 80,
+      "red_flags": [],
+      "notes": "Bitsec audited. 500+ H100 GPUs. AWS of Bittensor.",
+      "composite_credibility_score": 81.75,
+      "eligible_for_delegation": true
+    },
+    "60": {
+      "name": "Bitsec",
+      "team_score": 85,
+      "audit_score": 100,
+      "security_score": 95,
+      "utility_score": 90,
+      "community_score": 80,
+      "red_flags": [],
+      "notes": "Ecosystem security provider. Essential infrastructure.",
+      "composite_credibility_score": 91.25,
+      "eligible_for_delegation": true
+    },
+    "44": {
+      "name": "Score Vision",
+      "team_score": 75,
+      "audit_score": 55,
+      "security_score": 60,
+      "utility_score": 85,
+      "community_score": 75,
+      "red_flags": [],
+      "notes": "Computer vision for football. Real partnerships.",
+      "composite_credibility_score": 67.75,
+      "eligible_for_delegation": true
+    },
+    "62": {
+      "name": "Ridges",
+      "team_score": 70,
+      "audit_score": 55,
+      "security_score": 60,
+      "utility_score": 85,
+      "community_score": 75,
+      "red_flags": [],
+      "notes": "Stillcore Capital invested. Building SWE agents.",
+      "composite_credibility_score": 66.75,
+      "eligible_for_delegation": true
+    },
+    "34": {
+      "name": "BitMind",
+      "team_score": 70,
+      "audit_score": 60,
+      "security_score": 65,
+      "utility_score": 80,
+      "community_score": 75,
+      "red_flags": [],
+      "notes": "AI detection. Good APY performance.",
+      "composite_credibility_score": 68.5,
+      "eligible_for_delegation": true
+    },
+    "120": {
+      "name": "Affine",
+      "team_score": 65,
+      "audit_score": 55,
+      "security_score": 60,
+      "utility_score": 75,
+      "community_score": 65,
+      "red_flags": [],
+      "notes": "RL platform, uses Chutes for hosting.",
+      "composite_credibility_score": 62.75,
+      "eligible_for_delegation": true
+    },
+    "9": {
+      "name": "IOTA (Macrocosmos)",
+      "team_score": 75,
+      "audit_score": 60,
+      "security_score": 65,
+      "utility_score": 85,
+      "community_score": 70,
+      "red_flags": [],
+      "notes": "ArXiv paper. Swarm training architecture.",
+      "composite_credibility_score": 69.5,
+      "eligible_for_delegation": true
+    },
+    "4": {
+      "name": "Targon",
+      "team_score": 70,
+      "audit_score": 60,
+      "security_score": 70,
+      "utility_score": 75,
+      "community_score": 70,
+      "red_flags": [],
+      "notes": "Confidential compute with TEE. Long-running.",
+      "composite_credibility_score": 68.25,
+      "eligible_for_delegation": true
+    },
+    "2": {
+      "name": "DSperse",
+      "team_score": 70,
+      "audit_score": 60,
+      "security_score": 65,
+      "utility_score": 75,
+      "community_score": 65,
+      "red_flags": [],
+      "notes": "Zero-knowledge AI inference.",
+      "composite_credibility_score": 66.25,
+      "eligible_for_delegation": true
+    },
+    "12": {
+      "name": "Compute Horde",
+      "team_score": 65,
+      "audit_score": 55,
+      "security_score": 60,
+      "utility_score": 80,
+      "community_score": 70,
+      "red_flags": [],
+      "notes": "GPU compute marketplace.",
+      "composite_credibility_score": 64.25,
+      "eligible_for_delegation": true
+    },
+    "81": {
+      "name": "Grail",
+      "team_score": 65,
+      "audit_score": 55,
+      "security_score": 60,
+      "utility_score": 70,
+      "community_score": 65,
+      "red_flags": [],
+      "notes": "Post-training/RL. Part of Covenant ecosystem.",
+      "composite_credibility_score": 62.0,
+      "eligible_for_delegation": true
+    },
+    "111": {
+      "name": "oneoneone",
+      "team_score": 50,
+      "audit_score": 45,
+      "security_score": 50,
+      "utility_score": 55,
+      "community_score": 55,
+      "red_flags": [
+        "Very high APY - verify sustainability",
+        "Newer subnet"
+      ],
+      "notes": "High APY but less track record. Use caution.",
+      "composite_credibility_score": 30.15,
+      "eligible_for_delegation": false
+    },
+    "43": {
+      "name": "Graphite",
+      "team_score": 55,
+      "audit_score": 50,
+      "security_score": 55,
+      "utility_score": 60,
+      "community_score": 55,
+      "red_flags": [
+        "High APY variance"
+      ],
+      "notes": "High yield but needs monitoring.",
+      "composite_credibility_score": 46.324999999999996,
+      "eligible_for_delegation": false
+    },
+    "67": {
+      "name": "Tenex (DEREGISTERED)",
+      "team_score": 0,
+      "audit_score": 0,
+      "security_score": 0,
+      "utility_score": 0,
+      "community_score": 0,
+      "red_flags": [
+        "EXIT SCAM - $2.8M stolen",
+        "Pseudonymous team - vanished",
+        "No timelock - instant fee change to 99%",
+        "DEREGISTERED from network"
+      ],
+      "notes": "EXIT SCAM. DO NOT DELEGATE.",
+      "composite_credibility_score": 0,
+      "eligible_for_delegation": false
+    }
+  }
+}

@@ -1,0 +1,323 @@
+TAO Delegation Portfolio Optimizer
+
+---
+
+**Objective:** Analyze Bittensor validators and their associated subnets via Taostats.io API to identify optimal delegation targets for long-term TAO accumulation. Generate a specific portfolio allocation for a 175 TAO wallet. Critical emphasis on project credibility, security verification, and scam risk assessment following the Tenex (SN67) exit scam that resulted in $2.8 million in losses.
+
+**API Configuration:**
+```
+Base URL: https://api.taostats.io/api
+Rate Limit: 60 requests/minute
+Delay: 1.1 seconds between calls
+Auth Header: Authorization: tao-74cb361b-9fff-4b79-aa18-79eadae99b27:41067436
+Documentation: https://taostats.io/api-documentation/
+```
+
+**User Context:** The user is a passive delegator with a dedicated wallet containing 175 TAO. The goal is long-term TAO accumulation through compounding delegation rewards. Capital preservation takes priority over yield maximization. The user will not be mining or running validator infrastructure.
+
+---
+
+### Phase 1: Subnet Credibility Assessment
+
+Before analyzing any validator yields, evaluate the credibility and legitimacy of the subnet they operate on. A validator on a fraudulent subnet will result in total loss regardless of advertised APY. The Tenex collapse demonstrated that displayed "health scores" and "multisig" labels can be fabricated.
+
+**1.1 Team Transparency Score (0-100)**
+
+Research each subnet for verifiable team identity. Check whether team members have public identities on LinkedIn, GitHub, or Twitter with verifiable history. Investigate whether they have built previous projects and what the outcomes were. Determine if there is a registered company, foundation, or legal entity behind the subnet. Note whether team wallet addresses are known and can be monitored for unusual activity.
+
+Scoring guidance: Fully doxxed team with verifiable track record of successful projects receives 80-100. Partially known team with some verifiable history receives 50-79. Pseudonymous team but with active, long-term community presence receives 30-49. Completely anonymous team with no verifiable history receives 0-29.
+
+**1.2 Code Audit Status (0-100)**
+
+Security audits are becoming the ecosystem standard after Tenex. Check whether the subnet has undergone a third-party security audit, specifically looking for Bitsec (SN60) audits which are emerging as the Bittensor standard. Verify whether the audit report is publicly available and when it was conducted. Check if critical or high-severity issues were identified and whether they have been resolved. Confirm whether the codebase is open source and available on GitHub for independent review.
+
+Scoring guidance: Full Bitsec or equivalent audit with public report and no unresolved critical issues receives 90-100. Audit completed but some medium issues remain open receives 70-89. Audit in progress or formally scheduled with a named auditor receives 50-69. No audit but fully open source code available for inspection receives 30-49. No audit and closed source or repository is missing or deleted receives 0-29.
+
+**1.3 Smart Contract Security Indicators (0-100)**
+
+Tenex exploited the absence of a timelock to instantly change fees to 99% and drain funds. Analyze on-chain characteristics that signal security or vulnerability.
+
+Check whether there is a timelock on critical functions such as fee changes, parameter updates, and withdrawals. Determine if treasury control uses actual multisig requiring multiple signatures, or if it is a single private key. Examine the code for `onlyOwner` patterns on critical functions without additional safeguards. Look for emergency pause mechanisms with proper governance requirements. Verify whether liquidity is held in a verified smart contract or in a custodial wallet disguised as decentralized infrastructure.
+
+Scoring guidance: Verified multisig with meaningful timelock (24+ hours) and proper access controls receives 90-100. Multisig present but timelock missing or under 24 hours receives 60-89. Single owner control but with timelock and public address monitoring receives 40-59. Single owner without timelock receives 0-39 and represents a critical red flag indicating rug pull capability.
+
+**1.4 Utility Verification Score (0-100)**
+
+Tenex claimed to be a trading protocol but investigation revealed it was merely a liquidity reserve with no real miner utility. Assess whether the subnet performs genuine, verifiable work.
+
+Determine whether miners on this subnet perform measurable, useful computational work. Check if there is demonstrable output from the subnet's AI or compute function that can be independently verified. Investigate whether external users or customers pay for the subnet's services, indicating real revenue. Assess whether the subnet has product-market fit or exists purely for token speculation. Cross-reference marketing claims against on-chain activity and verifiable metrics.
+
+Scoring guidance: Demonstrable utility with external revenue streams or measurable AI output receives 80-100. Clear utility model with active development but pre-revenue receives 50-79. Vague utility claims with minimal verifiable activity receives 20-49. No discernible utility beyond token speculation receives 0-19.
+
+**1.5 Community and Communication Health (0-100)**
+
+Warning signs emerged in Tenex's Discord before the collapse when team members became defensive about utility questions. Healthy projects maintain transparent communication.
+
+Check whether there is an active Discord or Telegram with regular, substantive team updates. Observe whether team members respond to technical questions and criticism constructively or become defensive. Look for a public roadmap with measurable milestones and deadlines. Verify whether there are regular development updates with corresponding GitHub commits. Assess how the team responds to security questions or concerns raised by community members.
+
+Scoring guidance: Active community with responsive team and regular verifiable development updates receives 80-100. Moderate activity with occasional updates and reasonable responsiveness receives 50-79. Sparse communication, slow responses, or defensive reactions to questions receives 20-49. Silent team, deleted communication channels, or hostile responses to scrutiny receives 0-19.
+
+**1.6 Historical Red Flag Detection**
+
+Specifically scan for patterns that preceded known collapses like Tenex.
+
+Check whether the subnet has experienced any previous security incidents, exploits, or fund losses. Look for sudden large withdrawals by team wallets or early participants. Search for complaints about locked funds, failed withdrawals, or unilaterally changed terms. Investigate whether anyone has publicly questioned the subnet's utility or legitimacy and how the team responded. Compare early marketing promises against actual delivery. Analyze stake distribution for unusual concentration in few wallets that could indicate insider control or coordinated exit capability.
+
+Any subnet with multiple red flags should be excluded from delegation consideration regardless of yield.
+
+---
+
+### Phase 2: Composite Credibility Score
+
+Calculate an overall Credibility Score for each subnet using weighted components:
+
+```python
+def calculate_credibility_score(subnet):
+    credibility_score = (
+        team_transparency_score * 0.20 +
+        code_audit_score * 0.25 +
+        smart_contract_security_score * 0.25 +
+        utility_verification_score * 0.15 +
+        community_health_score * 0.15
+    )
+    
+    # Apply penalties for critical red flags
+    if has_single_owner_no_timelock:
+        credibility_score = credibility_score * 0.3  # 70% penalty - this is how Tenex rugged
+    elif has_multiple_red_flags:
+        credibility_score = credibility_score * 0.5  # 50% penalty
+    elif has_single_red_flag:
+        credibility_score = credibility_score * 0.8  # 20% penalty
+    
+    return credibility_score
+```
+
+Credibility thresholds determine delegation eligibility. Scores of 80-100 indicate high credibility suitable for significant allocation. Scores of 60-79 indicate moderate credibility suitable for smaller allocation with active monitoring. Scores of 40-59 indicate low credibility and should be avoided or limited to amounts the user can afford to lose entirely. Scores of 0-39 indicate unacceptable risk and must be excluded from any delegation.
+
+---
+
+### Phase 3: Validator Analysis for Credible Subnets
+
+Only proceed to validator analysis for subnets scoring 60 or higher on credibility. For each qualifying subnet, analyze individual validators as delegation targets.
+
+**3.1 Effective APY Calculation**
+
+Calculate what a delegator actually earns after all fees and dilution:
+
+```python
+def calculate_delegator_apy(validator):
+    # Current approximate daily network emission
+    daily_network_emission = 7200
+    
+    # This subnet's share of daily emissions
+    subnet_daily_emission = daily_network_emission * (subnet_emission_percent / 100)
+    
+    # This validator's share based on their stake weight within the subnet
+    validator_daily_earnings = subnet_daily_emission * (validator_stake / total_subnet_stake)
+    
+    # What delegators collectively receive after validator takes their commission
+    delegator_pool = validator_daily_earnings * (1 - take_rate)
+    
+    # Yield calculation for a standardized 1000 TAO delegation
+    sample_delegation = 1000
+    your_daily_yield = delegator_pool * (sample_delegation / validator_total_delegated_stake)
+    
+    # Annualize the daily yield
+    effective_apy = (your_daily_yield / sample_delegation) * 365 * 100
+    
+    return effective_apy
+```
+
+Run this calculation for every validator on credible subnets.
+
+**3.2 Validator Reliability Metrics**
+
+Uptime percentage over the past 90 days determines how consistently the validator earns rewards. Target validators with 98% or higher uptime.
+
+Reward consistency measured as the standard deviation of daily payouts indicates predictability. Lower variance means more reliable compounding projections.
+
+Operational longevity measured in months since registration indicates battle-tested infrastructure. Validators operating for 6+ months have demonstrated stability through various network conditions.
+
+Validator self-stake as a percentage of total delegated stake indicates skin in the game. Validators with meaningful personal stake are financially aligned with delegator success.
+
+**3.3 Validator Stability Score**
+
+```python
+def calculate_validator_stability(validator):
+    # Normalize each metric to 0-100 scale
+    uptime_score = min(100, (uptime_percentage / 99) * 100)  # 99%+ gets full score
+    consistency_score = max(0, 100 - (reward_std_dev * 10))  # Lower variance = higher score
+    longevity_score = min(100, (months_active / 12) * 100)   # 12+ months gets full score
+    alignment_score = min(100, (self_stake_percent / 10) * 100)  # 10%+ self-stake gets full score
+    
+    stability_score = (
+        uptime_score * 0.35 +
+        consistency_score * 0.30 +
+        longevity_score * 0.20 +
+        alignment_score * 0.15
+    )
+    
+    return stability_score
+```
+
+---
+
+### Phase 4: Final Accumulation Score
+
+Combine credibility and yield metrics into a final ranking that prioritizes capital preservation:
+
+```python
+def calculate_accumulation_score(subnet, validator):
+    # Credibility receives dominant weight because a scam means 100% loss
+    # No yield compensates for losing principal
+    credibility_weight = 0.55
+    yield_weight = 0.25
+    stability_weight = 0.20
+    
+    # Normalize effective APY to 0-100 scale (assuming max reasonable APY around 30%)
+    effective_apy_normalized = min(100, (effective_apy / 30) * 100)
+    
+    accumulation_score = (
+        subnet_credibility_score * credibility_weight +
+        effective_apy_normalized * yield_weight +
+        validator_stability_score * stability_weight
+    )
+    
+    return accumulation_score
+```
+
+The 55% weight on credibility reflects the mathematical reality that protecting principal matters more than optimizing yield. A subnet offering 35% APY that rugs results in -100% return. A subnet offering 15% APY that remains legitimate compounds to substantial gains over years.
+
+---
+
+### Phase 5: Portfolio Construction for 175 TAO
+
+After ranking all validator opportunities by accumulation score, construct a specific portfolio allocation for the user's 175 TAO wallet.
+
+**5.1 Diversification Requirements**
+
+Do not allocate more than 40% of the portfolio (70 TAO) to any single validator. Do not allocate more than 50% of the portfolio (87.5 TAO) to validators on the same subnet. Include validators from at least 3 different subnets to protect against subnet-specific risks such as emission cuts or protocol failures. Ensure at least one allocation targets the highest-stability validator even if yield is lower, serving as a defensive anchor position.
+
+**5.2 Portfolio Tiers**
+
+Structure the 175 TAO across three tiers based on risk-reward profile.
+
+The Core Holdings tier receives 60% of the portfolio (105 TAO) and targets the 2-3 validators with the highest accumulation scores. These positions prioritize credibility and stability. They form the foundation of long-term compounding and should require the least active monitoring.
+
+The Growth Holdings tier receives 30% of the portfolio (52.5 TAO) and targets 2 validators with strong credibility but higher yield potential. These may be on newer subnets with solid fundamentals but shorter track records. This tier accepts moderately higher risk for enhanced returns.
+
+The Opportunistic tier receives 10% of the portfolio (17.5 TAO) and targets 1 validator on an emerging subnet that passed credibility checks but has less historical data. This allocation captures upside from newer opportunities while limiting downside exposure to an acceptable loss amount.
+
+**5.3 Allocation Calculation**
+
+```python
+def construct_portfolio(ranked_validators, total_tao=175):
+    portfolio = []
+    
+    # Core Holdings: Top 2-3 by accumulation score with credibility >= 80
+    core_candidates = [v for v in ranked_validators if v.credibility >= 80][:3]
+    core_allocation = total_tao * 0.60  # 105 TAO
+    
+    # Growth Holdings: Next 2 with credibility >= 70
+    growth_candidates = [v for v in ranked_validators if 70 <= v.credibility < 80][:2]
+    growth_allocation = total_tao * 0.30  # 52.5 TAO
+    
+    # Opportunistic: 1 position with credibility >= 60
+    opportunistic_candidates = [v for v in ranked_validators if 60 <= v.credibility < 70][:1]
+    opportunistic_allocation = total_tao * 0.10  # 17.5 TAO
+    
+    # Distribute within each tier, weighted by accumulation score
+    # Apply maximum allocation caps (40% per validator, 50% per subnet)
+    
+    return portfolio
+```
+
+**5.4 Rebalancing Guidance**
+
+Include recommendations for when the user should re-run this analysis and potentially rebalance. Suggested triggers include: any subnet dropping below 60 credibility score, any validator experiencing extended downtime exceeding 48 hours, significant emission changes to any subnet in the portfolio, news of security incidents or team departures, and quarterly review regardless of events.
+
+---
+
+### Phase 6: Compounding Projections
+
+Model expected TAO growth for the recommended 175 TAO portfolio across multiple time horizons.
+
+**6.1 Projection Methodology**
+
+Calculate the portfolio's blended effective APY by weighting each position's APY by its allocation percentage. Model monthly compounding where rewards are claimed and restaked. Generate three scenarios to bracket outcomes.
+
+The conservative scenario uses the blended APY minus 5 percentage points to account for potential emission reductions, validator issues, or needed rebalancing into lower-yield alternatives.
+
+The moderate scenario uses the calculated blended APY as the baseline expectation.
+
+The optimistic scenario uses the blended APY plus 3 percentage points to account for favorable emission adjustments or successful migration to higher-yielding opportunities.
+
+**6.2 Projection Output**
+
+Generate a table showing projected TAO holdings at 6 months, 1 year, 2 years, 3 years, and 5 years for each scenario.
+
+```python
+def project_growth(initial_tao, blended_apy, years, scenario_adjustment):
+    adjusted_apy = blended_apy + scenario_adjustment
+    monthly_rate = adjusted_apy / 100 / 12
+    months = years * 12
+    final_tao = initial_tao * ((1 + monthly_rate) ** months)
+    return final_tao
+
+# Example for 175 TAO at 18% blended APY
+conservative = project_growth(175, 18, 5, -5)  # 13% effective
+moderate = project_growth(175, 18, 5, 0)       # 18% effective  
+optimistic = project_growth(175, 18, 5, 3)     # 21% effective
+```
+
+---
+
+### Phase 7: Output Requirements
+
+Generate three output files containing the complete analysis and actionable recommendations.
+
+**File 1: `tao_delegation_report.md`**
+
+Structure this report with the following sections in order.
+
+Begin with an Executive Summary presenting the recommended portfolio allocation in a clear table format showing each validator, their subnet, credibility grade, effective APY, and exact TAO allocation from the 175 TAO total. Include the portfolio's blended APY and the projected TAO holdings at 1, 3, and 5 years under the moderate scenario.
+
+Follow with a Scam Risk Assessment listing any subnets that failed credibility checks and must be avoided. For each excluded subnet, explain the specific red flags identified. Highlight any subnets that are borderline and require monitoring.
+
+Include a Subnet Credibility Rankings section presenting all analyzed subnets in a table with columns for Subnet ID and Name, Team Score, Audit Score, Security Score, Utility Score, Community Score, Red Flags Detected, and Overall Credibility Grade.
+
+Add a Validator Analysis section providing detailed profiles of the top 15 validators across all credible subnets. For each validator include their subnet, subnet credibility grade, take rate, total stake, personal stake percentage, 90-day uptime, reward consistency measure, months active, effective APY for a 1000 TAO delegation, stability score, and final accumulation score.
+
+Present the Recommended Portfolio in detail, explaining for each of the 5-6 selected validators: why they were chosen, which tier they belong to (Core, Growth, or Opportunistic), the exact TAO allocation, what percentage of the total portfolio this represents, and specific risks to monitor for this position.
+
+Include a Diversification Analysis confirming that the portfolio meets all diversification requirements including the per-validator cap, per-subnet cap, minimum subnet count, and inclusion of a defensive anchor position.
+
+Provide Accumulation Projections as a table showing projected TAO holdings across all three scenarios at 6 months, 1 year, 2 years, 3 years, and 5 years. Include the monthly TAO earnings estimate for the first year.
+
+Conclude with a Monitoring and Rebalancing Guide specifying what metrics to track, what thresholds should trigger review, and how frequently to re-run the analysis.
+
+**File 2: `credibility_analysis.json`**
+
+Store all raw credibility research data in structured JSON format. Include for each subnet: all individual component scores, specific evidence found for each scoring dimension, red flags detected with descriptions, data sources used, and timestamps for when data was collected. This file serves as an audit trail for the analysis.
+
+**File 3: `portfolio_allocation.json`**
+
+Store the final portfolio recommendation in a structured format suitable for programmatic use or import into tracking tools. Include for each position: validator identifier and address, subnet ID, allocation in TAO, allocation as percentage, tier classification, effective APY, credibility grade, and key risk factors. Include portfolio-level metrics such as total TAO allocated, blended APY, blended credibility score, and diversification metrics.
+
+---
+
+### Critical Safety Rules
+
+These rules are absolute and override yield optimization in all cases.
+
+Never recommend delegation to any subnet with a credibility score below 60. Always flag subnets without completed code audits as elevated risk and limit allocation accordingly. If a subnet's smart contracts show single-owner control without timelock, exclude it entirely from consideration as this is the exact mechanism Tenex used to rug. Weight recent negative news, community concerns, or defensive team behavior heavily in scoring. When uncertainty exists between two options, always choose the option that better preserves capital. A slightly lower APY on a verified legitimate subnet compounds to far more TAO over years than a high APY promise that ends in theft.
+
+The user's goal is sustainable TAO accumulation over a multi-year horizon. Every decision should optimize for the probability of still holding and growing TAO in five years, not for maximum theoretical yield today.
+
+---
+
+### Implementation Notes
+
+Implement exponential backoff for rate limiting, starting with 1.1-second delays between API calls and increasing the delay if 429 errors are encountered. Cache all API responses to local JSON files to enable re-running analysis without consuming API credits. Log all API calls with timestamps for debugging and audit purposes. Handle missing data gracefully, as some subnets or validators may have incomplete historical records. Where data is unavailable, note this explicitly and apply conservative assumptions rather than optimistic ones.
+
+For credibility research components that cannot be fully automated through the Taostats API (such as team identity verification or audit status), find what data sources and go get them for the user's review before finalizing delegation decisions.

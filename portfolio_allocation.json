@@ -1,0 +1,142 @@
+{
+  "analysis_timestamp": "2026-01-10T22:47:26.681719",
+  "user_context": {
+    "wallet_size_tao": 175,
+    "strategy": "Long-term TAO accumulation",
+    "priority": "Capital preservation over yield maximization"
+  },
+  "portfolio": {
+    "core": [
+      {
+        "validator": "tao5",
+        "hotkey": "5CsvRJXuR955WojnGMdok1hbhffZyB4N5ocrv82f3p5A2zVp",
+        "subnet_id": 60,
+        "subnet_name": "Bitsec",
+        "allocation_tao": 50,
+        "apy_30d": 14.8648,
+        "apy_7d": 14.8648,
+        "credibility_score": 91.25,
+        "accumulation_score": 76.38116666666667,
+        "take_rate": 8.99977111467155,
+        "nominators": 1448,
+        "stake_tao": 620295.268068012
+      },
+      {
+        "validator": "Unknown",
+        "hotkey": "5FFApaS75bv5pJHfAp2FVLBj9ZaXuFDjEypsaBNc1wCfe52v",
+        "subnet_id": 64,
+        "subnet_name": "Chutes",
+        "allocation_tao": 50,
+        "apy_30d": 13.4088,
+        "apy_7d": 13.4088,
+        "credibility_score": 84.5,
+        "accumulation_score": 72.062,
+        "take_rate": 8.99977111467155,
+        "nominators": 2045,
+        "stake_tao": 277579.158934873
+      }
+    ],
+    "growth": [
+      {
+        "validator": "Cortex Found\u03b1tion",
+        "hotkey": "5DM7CPqPKtMSADhFKYsstsCS4Tm4Kd6PMXoh6DdqY4MtxmtX",
+        "subnet_id": 8,
+        "subnet_name": "Vanta (PTN)",
+        "allocation_tao": 35,
+        "apy_30d": 17.644000000000002,
+        "apy_7d": 17.644000000000002,
+        "credibility_score": 77.5,
+        "accumulation_score": 66.39899486660315,
+        "take_rate": 0.0,
+        "nominators": 264,
+        "stake_tao": 80744.273331216
+      },
+      {
+        "validator": "Cortex Found\u03b1tion",
+        "hotkey": "5DM7CPqPKtMSADhFKYsstsCS4Tm4Kd6PMXoh6DdqY4MtxmtX",
+        "subnet_id": 3,
+        "subnet_name": "Templar",
+        "allocation_tao": 17.5,
+        "apy_30d": 17.644000000000002,
+        "apy_7d": 17.644000000000002,
+        "credibility_score": 77.0,
+        "accumulation_score": 66.12399486660316,
+        "take_rate": 0.0,
+        "nominators": 264,
+        "stake_tao": 80744.273331216
+      }
+    ],
+    "opportunistic": [
+      {
+        "validator": "tao.bot",
+        "hotkey": "5E2LP6EnZ54m3wS8s1yPvD5c3xo71kQroBw7aUVK32TKeZ5u",
+        "subnet_id": 0,
+        "subnet_name": "Root",
+        "allocation_tao": 17.5,
+        "apy_30d": 7.018842037565685,
+        "apy_7d": 7.722480104405216,
+        "credibility_score": 45,
+        "accumulation_score": 34.37590402215564,
+        "take_rate": 0.0,
+        "nominators": 3,
+        "stake_tao": 4179.485824279
+      }
+    ]
+  },
+  "projections": {
+    "blended_apy": 14.48717491563176,
+    "total_allocated": 170.0,
+    "scenarios": {
+      "conservative": {
+        "apy": 10,
+        "6_months": 178.68,
+        "1_year": 187.8,
+        "2_years": 207.47,
+        "3_years": 229.19,
+        "5_years": 279.7
+      },
+      "moderate": {
+        "apy": 14.48717491563176,
+        "6_months": 182.69,
+        "1_year": 196.33,
+        "2_years": 226.74,
+        "3_years": 261.86,
+        "5_years": 349.26
+      },
+      "optimistic": {
+        "apy": 19.487174915631762,
+        "6_months": 187.25,
+        "1_year": 206.25,
+        "2_years": 250.24,
+        "3_years": 303.6,
+        "5_years": 446.9
+      }
+    }
+  },
+  "diversification_compliance": {
+    "max_per_validator_pct": 40,
+    "max_per_subnet_pct": 50,
+    "min_subnets": 3,
+    "subnets_used": 5,
+    "validators_used": 5,
+    "tier_allocations": {
+      "core_tao": 100,
+      "growth_tao": 52.5,
+      "opportunistic_tao": 17.5
+    }
+  },
+  "rebalancing_triggers": [
+    "Any subnet credibility drops below 60",
+    "Any validator experiences >48hr downtime",
+    "Significant emission changes to portfolio subnets",
+    "Security incidents or team departures",
+    "Quarterly review (regardless of events)"
+  ],
+  "critical_exclusions": [
+    {
+      "subnet_id": 67,
+      "name": "Tenex",
+      "reason": "EXIT SCAM - $2.8M stolen. Deregistered from network."
+    }
+  ]
+}
