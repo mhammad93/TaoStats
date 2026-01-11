@@ -1,11 +1,14 @@
 {
-  "collection_timestamp": "2026-01-10T22:35:57.418090",
+  "collection_timestamp": "2026-01-10T23:12:18.485098",
   "subnets_count": 129,
-  "validators_count": 50,
+  "validators_count": 75,
   "files_generated": [
     "subnets_latest.json",
     "validators_latest.json",
     "subnet_pools.json",
-    "github_activity.json"
+    "subnet_identity.json",
+    "validator_yield.json",
+    "github_activity.json",
+    "collection_summary.json"
   ]
 }

@@ -238,12 +238,29 @@ def calculate_credibility_score(subnet_id: int) -> float:
     return base_score
 
 def load_all_data() -> Dict:
-    """Load all collected API data"""
+    """Load all collected API data with enhanced metrics"""
     data = {}
 
-    # Load subnet data
+    # Helper to safely convert to float, handling None values
+    def safe_float(val, default=0):
+        return float(val) if val is not None else default
+
+    # Load subnet data (includes emission, net_flow metrics)
     with open(f"{DATA_DIR}/subnets_latest.json") as f:
-        data["subnets"] = json.load(f)["data"]
+        subnets_raw = json.load(f)["data"]
+        data["subnets"] = subnets_raw
+        # Create subnet lookup by netuid
+        data["subnet_metrics"] = {}
+        for s in subnets_raw:
+            netuid = s.get("netuid")
+            if netuid is not None:
+                data["subnet_metrics"][netuid] = {
+                    "emission": safe_float(s.get("emission")),
+                    "net_flow_1_day": safe_float(s.get("net_flow_1_day")),
+                    "net_flow_7_days": safe_float(s.get("net_flow_7_days")),
+                    "net_flow_30_days": safe_float(s.get("net_flow_30_days")),
+                    "registration_cost": safe_float(s.get("registration_cost")) / 1e9,
+                }
 
     # Load validator data (pre-dTao structure)
     with open(f"{DATA_DIR}/validators_latest.json") as f:
@@ -258,15 +275,50 @@ def load_all_data() -> Dict:
             key = (y["hotkey"]["ss58"], y["netuid"])
             data["validator_yields"][key] = y
 
-    # Load subnet pools for names
+    # Load subnet pools (includes fear_and_greed, market_cap, liquidity, price_change)
     with open(f"{DATA_DIR}/subnet_pools.json") as f:
         pools = json.load(f)["data"]
         data["pool_names"] = {p["netuid"]: p.get("name", "Unknown") for p in pools}
+        # Enhanced pool metrics for market sentiment analysis
+        data["pool_metrics"] = {}
+        for p in pools:
+            netuid = p.get("netuid")
+            if netuid is not None:
+                data["pool_metrics"][netuid] = {
+                    "name": p.get("name", "Unknown") or "Unknown",
+                    "fear_and_greed_index": safe_float(p.get("fear_and_greed_index"), 50),
+                    "market_cap": safe_float(p.get("market_cap")),
+                    "liquidity": safe_float(p.get("liquidity")),
+                    "price_change_1h": safe_float(p.get("price_change_1h")),
+                    "price_change_24h": safe_float(p.get("price_change_24h")),
+                    "price_change_7d": safe_float(p.get("price_change_7d")),
+                    "volume_24h": safe_float(p.get("volume_24h")),
+                    "alpha_price": safe_float(p.get("alpha_price")),
+                }
 
-    # Load subnet identity for transparency info
-    with open(f"{DATA_DIR}/subnet_identity.json") as f:
-        identity_data = json.load(f)["data"]
-        data["subnet_identity"] = {s["netuid"]: s for s in identity_data}
+    # Load subnet identity for transparency info (optional - may not exist)
+    try:
+        with open(f"{DATA_DIR}/subnet_identity.json") as f:
+            identity_data = json.load(f)["data"]
+            data["subnet_identity"] = {s["netuid"]: s for s in identity_data}
+    except FileNotFoundError:
+        data["subnet_identity"] = {}
+
+    # Load GitHub activity for development signals (optional - may not exist)
+    try:
+        with open(f"{DATA_DIR}/github_activity.json") as f:
+            github_raw = json.load(f)["data"]
+            data["github_activity"] = {}
+            for g in github_raw:
+                netuid = g.get("netuid")
+                if netuid is not None:
+                    data["github_activity"][netuid] = {
+                        "commits_30d": g.get("commits_30d", 0),
+                        "contributors": g.get("contributors", 0),
+                        "last_commit": g.get("last_commit_at"),
+                    }
+    except FileNotFoundError:
+        data["github_activity"] = {}
 
     return data
 
@@ -293,8 +345,10 @@ def get_validator_apy(validator: dict, yield_data: dict) -> Tuple[float, float, 
 
     return best_30d_apy, best_7d_apy, best_netuid
 
-def calculate_stability_score(validator: dict, apy_30d: float, apy_7d: float) -> float:
-    """Calculate validator stability score"""
+def calculate_stability_score(validator: dict, apy_30d: float, apy_7d: float,
+                               pool_metrics: dict = None, subnet_metrics: dict = None,
+                               subnet_id: int = None) -> float:
+    """Calculate validator stability score with enhanced market data"""
     nominators = validator.get("nominators", 0)
     stake = float(validator.get("stake", 0)) / 1e9
 
@@ -311,10 +365,34 @@ def calculate_stability_score(validator: dict, apy_30d: float, apy_7d: float) ->
     else:
         consistency_score = 50
 
+    # Market sentiment score (from fear_and_greed_index)
+    sentiment_score = 50  # Default neutral
+    if pool_metrics and subnet_id and subnet_id in pool_metrics:
+        # fear_and_greed: 0=extreme fear, 100=extreme greed
+        # We want moderate levels (30-70) for stability
+        fgi = pool_metrics[subnet_id].get("fear_and_greed_index", 50)
+        if 30 <= fgi <= 70:
+            sentiment_score = 80  # Healthy range
+        elif 20 <= fgi <= 80:
+            sentiment_score = 60  # Acceptable
+        else:
+            sentiment_score = 40  # Extreme sentiment = higher risk
+
+    # Capital flow score (positive net_flow = healthy)
+    flow_score = 50  # Default
+    if subnet_metrics and subnet_id and subnet_id in subnet_metrics:
+        net_flow_7d = subnet_metrics[subnet_id].get("net_flow_7_days", 0)
+        if net_flow_7d > 0:
+            flow_score = min(100, 60 + (net_flow_7d / 1000) * 40)
+        else:
+            flow_score = max(20, 50 + (net_flow_7d / 1000) * 30)
+
     stability = (
-        nominator_score * 0.30 +
-        stake_score * 0.30 +
-        consistency_score * 0.40
+        nominator_score * 0.20 +
+        stake_score * 0.20 +
+        consistency_score * 0.30 +
+        sentiment_score * 0.15 +
+        flow_score * 0.15
     )
 
     return stability
@@ -322,6 +400,8 @@ def calculate_stability_score(validator: dict, apy_30d: float, apy_7d: float) ->
 def analyze_all_validators(data: Dict) -> List[dict]:
     """Analyze all validators with enhanced APY data - prioritizing high-credibility subnets"""
     results = []
+    pool_metrics = data.get("pool_metrics", {})
+    subnet_metrics = data.get("subnet_metrics", {})
 
     # First pass: Create entries for validators on HIGH-CREDIBILITY subnets (70+)
     high_cred_subnets = [sid for sid, info in SUBNET_CREDIBILITY.items()
@@ -348,14 +428,16 @@ def analyze_all_validators(data: Dict) -> List[dict]:
                 apy_30d = float(y.get("thirty_day_apy", 0)) * 100
                 apy_7d = float(y.get("seven_day_apy", 0)) * 100
 
-            # If no yield data, estimate from validator's base APR
+            # If no yield data, use validator's base APR (from validator endpoint)
             if apy_30d == 0:
-                base_apr = float(v.get("apr", 0)) * 100
+                # Use apr_30_day_average if available, else base apr
+                base_apr = float(v.get("apr_30_day_average", v.get("apr", 0))) * 100
                 apy_30d = base_apr * 0.8  # Conservative estimate
-                apy_7d = apy_30d
+                apy_7d = float(v.get("apr_7_day_average", base_apr / 100)) * 100 * 0.8
 
             subnet_cred = calculate_credibility_score(subnet_id)
-            stability = calculate_stability_score(v, apy_30d, apy_7d)
+            stability = calculate_stability_score(v, apy_30d, apy_7d,
+                                                   pool_metrics, subnet_metrics, subnet_id)
             subnet_name = SUBNET_CREDIBILITY[subnet_id]["name"]
 
             apy_normalized = min(100, (apy_30d / 60) * 100) if apy_30d > 0 else 30
@@ -402,7 +484,8 @@ def analyze_all_validators(data: Dict) -> List[dict]:
         if subnet_cred < 40:
             continue
 
-        stability = calculate_stability_score(v, apy_30d, apy_7d)
+        stability = calculate_stability_score(v, apy_30d, apy_7d,
+                                               pool_metrics, subnet_metrics, primary_subnet)
         subnet_name = data["pool_names"].get(primary_subnet, f"SN{primary_subnet}")
         if primary_subnet in SUBNET_CREDIBILITY:
             subnet_name = SUBNET_CREDIBILITY[primary_subnet]["name"]
@@ -597,6 +680,9 @@ def main():
     print(f"  - {len(data['subnets'])} subnets")
     print(f"  - {len(data['validators'])} validators")
     print(f"  - {len(data['validator_yields'])} validator yield records")
+    print(f"  - {len(data.get('pool_metrics', {}))} subnet pool metrics (sentiment/liquidity)")
+    print(f"  - {len(data.get('subnet_metrics', {}))} subnet flow metrics")
+    print(f"  - {len(data.get('github_activity', {}))} github activity records")
 
     # Analyze validators
     print("\n[2/5] Analyzing validators with real APY data...")

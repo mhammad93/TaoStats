@@ -46,6 +46,51 @@ def api_call(endpoint, params=None):
         time.sleep(RATE_LIMIT_DELAY * 2)  # Extra delay on error
         return None
 
+
+def api_call_paginated(endpoint, params=None, max_pages=150):
+    """Make paginated API calls to fetch ALL records"""
+    all_data = []
+    page = 1
+
+    if params is None:
+        params = {}
+
+    while page <= max_pages:
+        params["page"] = page
+        url = f"{BASE_URL}/{endpoint}"
+        print(f"Fetching: {url} (page {page})")
+
+        try:
+            response = requests.get(url, headers=HEADERS, params=params, timeout=30)
+            response.raise_for_status()
+            result = response.json()
+
+            data = result.get("data", [])
+            if not data:
+                break  # No more data
+
+            all_data.extend(data)
+
+            # Check pagination info
+            pagination = result.get("pagination", {})
+            total_pages = pagination.get("total_pages", 1)
+            current_page = pagination.get("current_page", page)
+
+            print(f"  Page {current_page}/{total_pages}: {len(data)} records (total: {len(all_data)})")
+
+            if current_page >= total_pages:
+                break
+
+            page += 1
+            time.sleep(RATE_LIMIT_DELAY)
+
+        except requests.exceptions.RequestException as e:
+            print(f"Error fetching {url}: {e}")
+            time.sleep(RATE_LIMIT_DELAY * 2)
+            break
+
+    return {"data": all_data, "total_fetched": len(all_data)}
+
 def save_json(data, filename):
     """Save data to JSON file"""
     filepath = os.path.join(OUTPUT_DIR, filename)
@@ -63,44 +108,42 @@ def fetch_subnets():
     return data
 
 def fetch_validators():
-    """Fetch all validator data"""
+    """Fetch all validator data with pagination"""
     print("\n=== Fetching Validator Data ===")
-    data = api_call("validator/latest/v1")
-    if data:
+    data = api_call_paginated("validator/latest/v1")
+    if data and data.get("data"):
         save_json(data, "validators_latest.json")
         print(f"Found {len(data.get('data', []))} validators")
     return data
 
 def fetch_validator_performance():
-    """Fetch validator performance metrics"""
+    """Fetch validator performance metrics - DEPRECATED: endpoint returns 400"""
     print("\n=== Fetching Validator Performance ===")
-    data = api_call("validator/performance/v1")
-    if data:
-        save_json(data, "validator_performance.json")
-    return data
+    print("  Skipping - endpoint not available in current API version")
+    return None
 
 def fetch_delegation_data():
-    """Fetch delegation/staking data"""
+    """Fetch delegation/staking data - DEPRECATED: endpoint returns 404"""
     print("\n=== Fetching Delegation Data ===")
-    data = api_call("delegation/latest/v1")
-    if data:
-        save_json(data, "delegation_latest.json")
-    return data
+    print("  Skipping - endpoint not available in current API version")
+    return None
 
 def fetch_subnet_identities():
-    """Fetch subnet identity/metadata"""
+    """Fetch subnet identity/metadata - DEPRECATED: endpoint returns 404"""
     print("\n=== Fetching Subnet Identities ===")
-    data = api_call("subnet_identity/latest/v1")
-    if data:
-        save_json(data, "subnet_identities.json")
-    return data
+    # Note: This endpoint appears to be deprecated or moved
+    # The subnet info is now embedded in subnets_latest.json
+    print("  Skipping - identity data embedded in subnets_latest.json")
+    return None
 
 def fetch_validator_yield():
-    """Fetch validator yield/APY data"""
-    print("\n=== Fetching Validator Yield Data ===")
-    data = api_call("validator/yield/v1")
-    if data:
+    """Fetch validator yield/APY data from dTao endpoint with pagination"""
+    print("\n=== Fetching Validator Yield Data (dTao) ===")
+    # FIXED: Correct endpoint is dtao/validator/yield/latest/v1 (not validator/yield/v1)
+    data = api_call_paginated("dtao/validator/yield/latest/v1")
+    if data and data.get("data"):
         save_json(data, "validator_yield.json")
+        print(f"Found {len(data.get('data', []))} yield records")
     return data
 
 def fetch_subnet_pools():
@@ -112,11 +155,12 @@ def fetch_subnet_pools():
     return data
 
 def fetch_github_activity():
-    """Fetch subnet GitHub development activity"""
+    """Fetch subnet GitHub development activity with pagination"""
     print("\n=== Fetching GitHub Activity ===")
-    data = api_call("dev_activity/latest/v1")
-    if data:
+    data = api_call_paginated("dev_activity/latest/v1")
+    if data and data.get("data"):
         save_json(data, "github_activity.json")
+        print(f"Found {len(data.get('data', []))} github activity records")
     return data
 
 def main():

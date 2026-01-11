@@ -16,12 +16,11 @@ This project analyzes Bittensor validators and subnets via the Taostats API to g
 - `portfolio_allocation.json` - Programmatic portfolio recommendation
 
 ### Data Directory (`/data`)
-- `subnets_latest.json` - All subnet data (129 subnets)
-- `validators_latest.json` - Validator profiles (50 validators)
-- `validator_yield.json` - dTao APY data
-- `subnet_identity.json` - Team/GitHub transparency info
-- `subnet_pools.json` - Pool/pricing data
-- `github_activity.json` - Development metrics
+- `subnets_latest.json` - All subnet data (129 subnets) with emission, net_flow metrics
+- `validators_latest.json` - Validator profiles (75 validators, paginated)
+- `validator_yield.json` - dTao APY data (6,100+ records, paginated)
+- `subnet_pools.json` - Pool/pricing data with fear_and_greed_index, liquidity, volume
+- `github_activity.json` - Development metrics (115 records, paginated)
 
 ## API Configuration
 
@@ -38,13 +37,14 @@ API_KEY = os.environ.get("TAOSTATS_API_KEY")  # From environment
 RATE_LIMIT = 60 requests/minute (1.2s delay between calls)
 ```
 
-### Key Endpoints
-- `/api/subnet/latest/v1` - Subnet data
-- `/api/validator/latest/v1` - Validator data
-- `/api/dtao/validator/yield/latest/v1` - Real APY data (dTao)
-- `/api/subnet/identity/v1` - Subnet metadata/transparency
-- `/api/dtao/pool/latest/v1` - Pool/pricing data
-- `/api/dev_activity/latest/v1` - GitHub activity
+### Key Endpoints (with pagination support)
+- `/api/subnet/latest/v1` - Subnet data (single page)
+- `/api/validator/latest/v1` - Validator data (paginated, ~75 records)
+- `/api/dtao/validator/yield/latest/v1` - Real APY data (paginated, ~6,100 records)
+- `/api/dtao/pool/latest/v1` - Pool/pricing data with sentiment metrics
+- `/api/dev_activity/latest/v1` - GitHub activity (paginated, ~115 records)
+
+**Note:** The `fetch_data.py` script handles pagination automatically to fetch ALL records.
 
 ## Credibility Scoring Methodology
 
@@ -74,6 +74,14 @@ Credibility = (Team × 0.20) + (Audit × 0.25) + (Security × 0.25) + (Utility �
    ```
    Score = (Credibility × 0.55) + (APY_Normalized × 0.25) + (Stability × 0.20)
    ```
+
+4. **Enhanced Stability Score** (uses market data)
+   ```
+   Stability = (Nominators × 0.20) + (Stake × 0.20) + (APY_Consistency × 0.30)
+             + (Sentiment × 0.15) + (Flow × 0.15)
+   ```
+   - `Sentiment`: Based on `fear_and_greed_index` (30-70 = healthy)
+   - `Flow`: Based on `net_flow_7_days` (positive = healthy capital inflow)
 
 ## Critical Safety Rules
 

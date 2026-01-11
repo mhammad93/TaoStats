@@ -53,17 +53,19 @@ python3 analyze_portfolio.py
 
 ## Sample Portfolio Output
 
-For a **175 TAO** wallet:
+For a **175 TAO** wallet (as of January 2026):
 
 | Tier | Validator | Subnet | APY | Credibility | Allocation |
 |------|-----------|--------|-----|-------------|------------|
-| Core | tao5 | Bitsec (SN60) | 14.9% | A (91.3) | 50 TAO |
-| Core | Unknown | Chutes (SN64) | 13.4% | A- (84.5) | 50 TAO |
-| Growth | Cortex Foundation | Vanta (SN8) | 17.6% | B+ (77.5) | 35 TAO |
-| Growth | Cortex Foundation | Templar (SN3) | 17.6% | B+ (77.0) | 17.5 TAO |
-| Opportunistic | tao.bot | Root (SN0) | 7.0% | C (45.0) | 17.5 TAO |
+| Core | Polychain | Nineteen.ai (SN19) | 79.0% | A- (80) | 50 TAO |
+| Core | Taostats | Lium.io (SN51) | 58.8% | A- (82) | 50 TAO |
+| Growth | Unknown | Templar (SN3) | 371.3% | B+ (77) | 35 TAO |
+| Growth | Tensorplex Labs | Nineteen.ai (SN19) | 87.9% | A- (80) | 17.5 TAO |
+| Opportunistic | Unknown | Hone | 144.2% | C (45) | 17.5 TAO |
 
-**Blended APY:** 14.5% | **5-Year Projection:** 349 TAO (+105%)
+**Blended APY:** 140.9% | **Subnets Used:** 4
+
+*Note: APY rates are highly variable and reflect current market conditions.*
 
 ## Credibility Scoring Methodology
 
@@ -103,13 +105,15 @@ Score = (Team × 20%) + (Audit × 25%) + (Security × 25%) + (Utility × 15%) + 
 
 Uses [Taostats API](https://docs.taostats.io) with the following endpoints:
 
-| Endpoint | Purpose |
-|----------|---------|
-| `/api/subnet/latest/v1` | Subnet metadata |
-| `/api/validator/latest/v1` | Validator profiles |
-| `/api/dtao/validator/yield/latest/v1` | Real APY data |
-| `/api/subnet/identity/v1` | Team/GitHub info |
-| `/api/dtao/pool/latest/v1` | Pool pricing |
+| Endpoint | Purpose | Records |
+|----------|---------|---------|
+| `/api/subnet/latest/v1` | Subnet metadata with emission/flow metrics | ~129 |
+| `/api/validator/latest/v1` | Validator profiles | ~75 (paginated) |
+| `/api/dtao/validator/yield/latest/v1` | Real APY data | ~6,100 (paginated) |
+| `/api/dtao/pool/latest/v1` | Pool pricing & sentiment metrics | ~129 |
+| `/api/dev_activity/latest/v1` | GitHub activity | ~115 (paginated) |
+
+**Note:** The `fetch_data.py` script handles pagination automatically to ensure complete data retrieval.
 
 ## Critical Exclusions
 
@@ -123,20 +127,20 @@ Uses [Taostats API](https://docs.taostats.io) with the following endpoints:
 
 ```
 TAO/
-├── fetch_data.py              # Data collection script
+├── fetch_data.py              # Data collection script (with pagination)
 ├── analyze_portfolio.py       # Main analysis engine
-├── tao_delegation_report.md   # Human-readable report
-├── credibility_analysis.json  # Credibility data
-├── portfolio_allocation.json  # Portfolio recommendation
+├── requirements.txt           # Python dependencies
+├── .env.example               # Environment template
+├── credibility_analysis.json  # Credibility data output
+├── portfolio_allocation.json  # Portfolio recommendation output
 ├── CLAUDE.md                  # Claude Code context
 ├── README.md                  # This file
 └── data/
-    ├── subnets_latest.json
-    ├── validators_latest.json
-    ├── validator_yield.json
-    ├── subnet_identity.json
-    ├── subnet_pools.json
-    └── github_activity.json
+    ├── subnets_latest.json    # 129 subnets with flow metrics
+    ├── validators_latest.json # 75 validators (paginated)
+    ├── validator_yield.json   # 6,100+ APY records (paginated)
+    ├── subnet_pools.json      # Pool pricing & sentiment
+    └── github_activity.json   # 115 dev activity records
 ```
 
 ## Safety Disclaimer

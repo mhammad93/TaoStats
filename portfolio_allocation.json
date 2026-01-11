@@ -1,5 +1,5 @@
 {
-  "analysis_timestamp": "2026-01-10T22:47:26.681719",
+  "analysis_timestamp": "2026-01-10T23:12:26.630511",
   "user_context": {
     "wallet_size_tao": 175,
     "strategy": "Long-term TAO accumulation",
@@ -8,108 +8,108 @@
   "portfolio": {
     "core": [
       {
-        "validator": "tao5",
-        "hotkey": "5CsvRJXuR955WojnGMdok1hbhffZyB4N5ocrv82f3p5A2zVp",
-        "subnet_id": 60,
-        "subnet_name": "Bitsec",
+        "validator": "Polychain",
+        "hotkey": "5FxcZraZACr4L78jWkcYe3FHdiwiAUzrKLVtsSwkvFobBKqq",
+        "subnet_id": 19,
+        "subnet_name": "Nineteen.ai",
         "allocation_tao": 50,
-        "apy_30d": 14.8648,
-        "apy_7d": 14.8648,
-        "credibility_score": 91.25,
-        "accumulation_score": 76.38116666666667,
-        "take_rate": 8.99977111467155,
-        "nominators": 1448,
-        "stake_tao": 620295.268068012
+        "apy_30d": 79.03365636349108,
+        "apy_7d": 70.36358645533024,
+        "credibility_score": 79.75,
+        "accumulation_score": 86.94608818653884,
+        "take_rate": 17.9995422293431,
+        "nominators": 203,
+        "stake_tao": 455507.751446432
       },
       {
-        "validator": "Unknown",
-        "hotkey": "5FFApaS75bv5pJHfAp2FVLBj9ZaXuFDjEypsaBNc1wCfe52v",
-        "subnet_id": 64,
-        "subnet_name": "Chutes",
+        "validator": "Taostats",
+        "hotkey": "5GKH9FPPnWSUoeeTJp19wVtd84XqFW4pyK2ijV2GsFbhTrP1",
+        "subnet_id": 51,
+        "subnet_name": "Lium.io",
         "allocation_tao": 50,
-        "apy_30d": 13.4088,
-        "apy_7d": 13.4088,
-        "credibility_score": 84.5,
-        "accumulation_score": 72.062,
+        "apy_30d": 58.83497455295043,
+        "apy_7d": 57.42251805430221,
+        "credibility_score": 81.75,
+        "accumulation_score": 86.1889876566356,
         "take_rate": 8.99977111467155,
-        "nominators": 2045,
-        "stake_tao": 277579.158934873
+        "nominators": 6691,
+        "stake_tao": 767381.773437417
       }
     ],
     "growth": [
       {
-        "validator": "Cortex Found\u03b1tion",
-        "hotkey": "5DM7CPqPKtMSADhFKYsstsCS4Tm4Kd6PMXoh6DdqY4MtxmtX",
-        "subnet_id": 8,
-        "subnet_name": "Vanta (PTN)",
-        "allocation_tao": 35,
-        "apy_30d": 17.644000000000002,
-        "apy_7d": 17.644000000000002,
-        "credibility_score": 77.5,
-        "accumulation_score": 66.39899486660315,
-        "take_rate": 0.0,
-        "nominators": 264,
-        "stake_tao": 80744.273331216
-      },
-      {
-        "validator": "Cortex Found\u03b1tion",
-        "hotkey": "5DM7CPqPKtMSADhFKYsstsCS4Tm4Kd6PMXoh6DdqY4MtxmtX",
+        "validator": "Unknown",
+        "hotkey": "5Dz8ShM6rtPw1GBAaqxjycT9LF1TC3iDpzpUH9gKr85Nizo6",
         "subnet_id": 3,
         "subnet_name": "Templar",
-        "allocation_tao": 17.5,
-        "apy_30d": 17.644000000000002,
-        "apy_7d": 17.644000000000002,
+        "allocation_tao": 35,
+        "apy_30d": 371.3184,
+        "apy_7d": 0.0,
         "credibility_score": 77.0,
-        "accumulation_score": 66.12399486660316,
-        "take_rate": 0.0,
-        "nominators": 264,
-        "stake_tao": 80744.273331216
+        "accumulation_score": 72.8300985995954,
+        "take_rate": 17.9995422293431,
+        "nominators": 2,
+        "stake_tao": 4.92997977
+      },
+      {
+        "validator": "Tensorplex Labs",
+        "hotkey": "5E4z3h9yVhmQyCFWNbY9BPpwhx4xFiPwq3eeqmBgVF6KULde",
+        "subnet_id": 19,
+        "subnet_name": "Nineteen.ai",
+        "allocation_tao": 17.5,
+        "apy_30d": 87.93620666456928,
+        "apy_7d": 79.00640823828155,
+        "credibility_score": 79.75,
+        "accumulation_score": 85.08308787389461,
+        "take_rate": 8.99977111467155,
+        "nominators": 199,
+        "stake_tao": 101958.551990245
       }
     ],
     "opportunistic": [
       {
-        "validator": "tao.bot",
-        "hotkey": "5E2LP6EnZ54m3wS8s1yPvD5c3xo71kQroBw7aUVK32TKeZ5u",
-        "subnet_id": 0,
-        "subnet_name": "Root",
+        "validator": "Unknown",
+        "hotkey": "5Dd8gaRNdhm1YP7G1hcB1N842ecAUQmbLjCRLqH5ycaTGrWv",
+        "subnet_id": 5,
+        "subnet_name": "Hone",
         "allocation_tao": 17.5,
-        "apy_30d": 7.018842037565685,
-        "apy_7d": 7.722480104405216,
+        "apy_30d": 144.18424441101547,
+        "apy_7d": 159.307531900419,
         "credibility_score": 45,
-        "accumulation_score": 34.37590402215564,
-        "take_rate": 0.0,
-        "nominators": 3,
-        "stake_tao": 4179.485824279
+        "accumulation_score": 64.85133647116454,
+        "take_rate": 17.9995422293431,
+        "nominators": 24,
+        "stake_tao": 300671.225744871
       }
     ]
   },
   "projections": {
-    "blended_apy": 14.48717491563176,
+    "blended_apy": 140.8922555273224,
     "total_allocated": 170.0,
     "scenarios": {
       "conservative": {
-        "apy": 10,
-        "6_months": 178.68,
-        "1_year": 187.8,
-        "2_years": 207.47,
-        "3_years": 229.19,
-        "5_years": 279.7
+        "apy": 130.8922555273224,
+        "6_months": 316.39,
+        "1_year": 588.83,
+        "2_years": 2039.52,
+        "3_years": 7064.29,
+        "5_years": 84751.62
       },
       "moderate": {
-        "apy": 14.48717491563176,
-        "6_months": 182.69,
-        "1_year": 196.33,
-        "2_years": 226.74,
-        "3_years": 261.86,
-        "5_years": 349.26
+        "apy": 140.8922555273224,
+        "6_months": 330.92,
+        "1_year": 644.17,
+        "2_years": 2440.91,
+        "3_years": 9249.19,
+        "5_years": 132802.76
       },
       "optimistic": {
-        "apy": 19.487174915631762,
-        "6_months": 187.25,
-        "1_year": 206.25,
-        "2_years": 250.24,
-        "3_years": 303.6,
-        "5_years": 446.9
+        "apy": 145.8922555273224,
+        "6_months": 338.39,
+        "1_year": 673.59,
+        "2_years": 2668.98,
+        "3_years": 10575.35,
+        "5_years": 166032.0
       }
     }
   },
@@ -117,7 +117,7 @@
     "max_per_validator_pct": 40,
     "max_per_subnet_pct": 50,
     "min_subnets": 3,
-    "subnets_used": 5,
+    "subnets_used": 4,
     "validators_used": 5,
     "tier_allocations": {
       "core_tao": 100,
